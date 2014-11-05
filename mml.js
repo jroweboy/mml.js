@@ -1,7 +1,7 @@
 // fixing ampersand fixes this test case. Errors are
 // d#2&d# should be the same note
 // f+2&f should be a different note
-mmlToPlay = "c2&cd#2&d#r2e2&e-f+2&fg2&a";
+// mmlToPlay = "c2&cd#2&d#r2e2&e-f+2&fg2&a";
 
 // UNCOMMENT one of these to test a full song
 
@@ -10,7 +10,7 @@ mmlToPlay = "c2&cd#2&d#r2e2&e-f+2&fg2&a";
 // chocobo theme
 //mmlToPlay = "t162v127l8<a+>d<g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+,l32gb>dfa>cega4l8bge>d<bgb4g4b4.agg16a16gfg4.fgg16b16>def2d4<bge>d<bgb4g4b4.agg16a16gfg4.";
 // lttp dark world -- TODO fix ampersand to get this one complete
-//mmlToPlay = "T128V127L8o5cg2&gcg>cc16<a#16a2.fg4c2&cff16d#16d2.<a#>c1,o3>g>d#2&d#<g>d#gg16f16f2.dd#4<g#2&g#>dd16c16<a#2.gg1,o4r4ggg16g16gg4g4aaa16a16aa4g4ggg16g16gg4g4fff16f16ff4f4ggg16g16ga2a#a#a#16a#16a#>c2";
+mmlToPlay = "T128V127L8o5cg2&gcg>cc16<a#16a2.fg4c2&cff16d#16d2.<a#>c1,o3>g>d#2&d#<g>d#gg16f16f2.dd#4<g#2&g#>dd16c16<a#2.gg1,o4r4ggg16g16gg4g4aaa16a16aa4g4ggg16g16gg4g4fff16f16ff4f4ggg16g16ga2a#a#a#16a#16a#>c2";
 // sarias song
 //mmlToPlay = "L8T140V127fab4fab4fab>ed4<b>c<bge2rdege2.fab4fab4fab>ed4<b>ce<bg2rbgde2.,O4V100faaafaaafaaafaaaegggeggdegggegggfaaafaaafaaafaaaegggeggdegggeggg";
 
@@ -91,6 +91,10 @@ var MML = function(text) {
                         var override_length = "";
                         // store a copy of this in case we hit a & and need to see if we do anything special
                         var orig_note = input[i];
+                        // and store the sharp/flat of the note as well
+                        if (input[i+1] == '+' || input[i+1] == '-'){
+                            orig_note += input[i+1];
+                        }
                         var note = input[i].toUpperCase();
                         var hasDot = false;
                         // if a flat or sharp moves the octave I need to temporarily move the octave just for this note
@@ -170,7 +174,7 @@ var MML = function(text) {
                             if (input[i] == orig_note[0]){
                                 // and have the same sharp/flat or lack thereof
                                 if ((orig_note.length > 1 && orig_note[1] == input[i+1]) ||
-                                    (input[i+1] != '+' && input[i+1] != '-')) {
+                                    (orig_note.length == 1 && input[i+1] != '+' && input[i+1] != '-')) {
                                     // get the note length of this next note and add it to the duration
                                     i += orig_note.length;
                                     var ampersand_dot = false;
