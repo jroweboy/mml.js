@@ -24,7 +24,7 @@ function playSong(event) {
     var mml_song = document.getElementById("mml_text").value;
     mml = new MML(mml_song);
     var instrument = event.target.getAttribute("data-play");
-    length = mml.play(instrument);
+    var length = mml.play(instrument);
     song_finished_timeout = setTimeout(togglePlayButtons, length*1000);
     togglePlayButtons();
 }
@@ -48,12 +48,46 @@ window.onload = function() {
     document.getElementById("guitarPlay").onclick = playSong;
     document.getElementById("flutePlay").onclick = playSong;
     document.getElementById("stopSound").onclick = stopSound;
+    var keys = Object.keys(demo_mml);
+    for (var i=0; i<keys.length; ++i){
+        var key = keys[i];
+        var button = document.createElement("button");
+        button.dataset.song = key;
+        button.className = "demo_button";
+        button.onclick = addSong;
+        var name = key.split("_");
+        for (var j=0; j<name.length; ++j){
+            name[j] = name[j][0].toUpperCase() + name[j].slice(1);
+        }
+        button.innerHTML = name.join(" ");
+        document.getElementById("insertDemosHere").appendChild(button);
+    }
+    document.getElementById("randomSong").onclick = addSong;
+};
+
+function addSong() {
+    var song_name = event.target.getAttribute("data-song");
+    document.getElementById("mml_text").value = (song_name == "mml_random") ? randomProperty(demo_mml) : demo_mml[song_name];
+}
+
+var demo_mml = {
+      "balamb_garden": "l8t86v127rc>e4d4c4.<c>e4d4c4.<c>e4d4c4<b>cdc2r<rc>e4d4c4.<c>e4d4c4.<c>e4d4c4<fc4a2.caefeae4caefeae4ag#a>dc#edf#egf#bac#de1r<ag#a>dc#edf#egf#bac#da1,<<f1f1f1f1f1f1f1>b>cdc2r<<f1f1d1d1>>c1<<d1d1>>c1"
+    , "chocobo_theme": "t162v127l8<a+>d<g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+ab+g>dc-d<fb+,l32gb>dfa>cega4l8bge>d<bgb4g4b4.agg16a16gfg4.fgg16b16>def2d4<bge>d<bgb4g4b4.agg16a16gfg4."
+    , "lttp_dark_world": "T128V127L8o5cg2&gcg>cc16<a#16a2.fg4c2&cff16d#16d2.<a#>c1,o3>g>d#2&d#<g>d#gg16f16f2.dd#4<g#2&g#>dd16c16<a#2.gg1,o4r4ggg16g16gg4g4aaa16a16aa4g4ggg16g16gg4g4fff16f16ff4f4ggg16g16ga2a#a#a#16a#16a#>c2"
+    , "sarias_song": "L8T140V127fab4fab4fab>ed4<b>c<bge2rdege2.fab4fab4fab>ed4<b>ce<bg2rbgde2.,O4V100faaafaaafaaafaaaegggeggdegggegggfaaafaaafaaafaaaegggeggdegggeggg"
+    , "oot_courtyard_theme": "o5t125l8d+e<cc>f+g<gg>>>d+e<<cc>>f+g<<<a+a+g+aff>efcc>g+a<ff>>ef<<d+d+d+e<cc>f+g<gg>>>d+e<<cc>>f+g<<<a+a+>rv127ggggffffede16f16d4.&dr8d+d+d+d+dc<a>c+dcd16d+16c4.&cr8cccc<ba+ar8g+aa+b>cc+d,o5l8c-c<<cc>>d+e<<gg>>>>c-c<<<cc>>>d+e<<<<a+a+>ef<ff>>cd<cc>>ef<<ff>>>cd<<<d+d+>c-cr4d+e<<gg>>>>c-c<<<cc>>>d+e<<<<a+a+v80l1.g&g4.f+8f&f4d+8d8c&c4c8c8,o4v80l1.rrrrg&g4.f+8f&f4d+8d8c&c4c8c8"
+};
+function randomProperty (obj) {
+    var keys = Object.keys(obj)
+    return obj[keys[ keys.length * Math.random() << 0]];
 };
 
 </script>
 </head>
 <body>
 <div>
+<span id="insertDemosHere"></span>
+<span><button class="demo_button" data-song="mml_random" id="randomSong">Random Song</button></span><br>
 <textarea cols="100" rows="20" id="mml_text"></textarea><br>
 <button id="pianoPlay" class="play_button" data-play="acoustic_grand_piano" disabled>Piano</button>
 <button id="guitarPlay" class="play_button" data-play="acoustic_guitar_nylon" disabled>Guitar</button>
