@@ -2,12 +2,68 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Archeage MML.js Player</title>
+    <script>
+
+function togglePlayButtons() {
+    var buttons = document.getElementsByClassName('play_button');
+    for (i=0; i<buttons.length; ++i) {
+        buttons[i].disabled = !buttons[i].disabled;
+    }
+}
+
+// this overrides the callback that I give to the MIDI initializer
+function loadComplete() {
+    // enable the buttons since the start off disabled
+    togglePlayButtons();
+}
+
+var mml;
+var song_finished_timeout;
+function playSong(event) {
+    var mml_song = document.getElementById("mml_text").value;
+    mml = new MML(mml_song);
+    var instrument = event.target.getAttribute("data-play");
+    length = mml.play(instrument);
+    song_finished_timeout = setTimeout(togglePlayButtons, length*1000);
+    togglePlayButtons();
+}
+
+function stopSound(event) {
+    // stopAudio();
+    // MIDI = null;
+    // MIDI.stopAllNotes();
+    // we going nuclear this time
+    // var interval_id = window.setInterval("", 9999);
+    // for (var i = 1; i < interval_id; ++i){
+    //         window.clearInterval(i);
+    // }
+    mml.stop();
+    clearTimeout(song_finished_timeout);
+    // togglePlayButtons();
+}
+
+window.onload = function() {
+    document.getElementById("pianoPlay").onclick = playSong;
+    document.getElementById("guitarPlay").onclick = playSong;
+    document.getElementById("flutePlay").onclick = playSong;
+    document.getElementById("stopSound").onclick = stopSound;
+};
+
+</script>
 </head>
 <body>
+<div>
+<textarea cols="100" rows="20" id="mml_text"></textarea><br>
+<button id="pianoPlay" class="play_button" data-play="acoustic_grand_piano" disabled>Piano</button>
+<button id="guitarPlay" class="play_button" data-play="acoustic_guitar_nylon" disabled>Guitar</button>
+<button id="flutePlay" class="play_button" data-play="flute" disabled>Flute</button>
+<button id="stopSound" class="play_button" data-stop="stop">Feeling lucky? Then this might be a stop button</button>
+</div>
+
+
 <script type="text/javascript" src="inc/base64binary.js"></script>
 <script type="text/javascript" src="Midi.js"></script>
 <script type="text/javascript" src="mml.js"></script>
-
 </body>
 </html>
