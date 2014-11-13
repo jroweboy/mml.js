@@ -427,7 +427,9 @@ if (typeof (MIDI) === "undefined") var MIDI = {};
             var instrument = MIDI.channels[channel].instrument;
             if (!audioBuffers[instrument + "" + note]) return;
             /// convert relative delay to absolute delay
-            if (delay < ctx.currentTime) delay += ctx.currentTime;
+            // console.log("delay: "+delay+" ctxcurrenttime: " +ctx.currentTime);
+            // if (delay < ctx.currentTime) 
+                delay += ctx.currentTime;
             /// crate audio buffer
             var source = ctx.createBufferSource();
             sources[channel + "" + note] = source;
@@ -453,7 +455,8 @@ if (typeof (MIDI) === "undefined") var MIDI = {};
 
         root.noteOff = function (channel, note, delay) {
             delay = delay || 0;
-            if (delay < ctx.currentTime) delay += ctx.currentTime;
+            // if (delay < ctx.currentTime)
+             delay += ctx.currentTime;
             var source = sources[channel + "" + note];
             if (!source) return;
             if (source.gainNode) {

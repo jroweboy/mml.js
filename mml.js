@@ -355,7 +355,8 @@ var MML = function(text) {
                 MIDI.programChange(2, 73);
                 break;
             }
-            var start_delay = 5; // bad choice? I dunno...
+            // debugger;
+            var start_delay = 0; // bad choice? I dunno...
             var end_delay = 0; 
             for (var i=0; i<3; ++i) {
                 // so it looks like if I have a delay that is too small

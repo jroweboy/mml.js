@@ -65,7 +65,7 @@ window.onload = function() {
     document.getElementById("randomSong").onclick = addSong;
 };
 
-function addSong() {
+function addSong(event) {
     var song_name = event.target.getAttribute("data-song");
     document.getElementById("mml_text").value = (song_name == "mml_random") ? randomProperty(demo_mml) : demo_mml[song_name];
 }
@@ -89,15 +89,15 @@ function randomProperty (obj) {
 <span id="insertDemosHere"></span>
 <span><button class="demo_button" data-song="mml_random" id="randomSong">Random Song</button></span><br>
 <textarea cols="100" rows="20" id="mml_text"></textarea><br>
-<button id="pianoPlay" class="play_button" data-play="acoustic_grand_piano" disabled>Piano</button>
-<button id="guitarPlay" class="play_button" data-play="acoustic_guitar_nylon" disabled>Guitar</button>
-<button id="flutePlay" class="play_button" data-play="flute" disabled>Flute</button>
-<button id="stopSound" class="play_button" data-stop="stop">Feeling lucky? Then this might be a stop button</button>
+<button id="pianoPlay" class="play_button" data-play="acoustic_grand_piano" disabled="disabled" autocomplete="off">Piano</button>
+<button id="guitarPlay" class="play_button" data-play="acoustic_guitar_nylon" disabled="disabled" autocomplete="off">Guitar</button>
+<button id="flutePlay" class="play_button" data-play="flute" disabled="disabled" autocomplete="off">Flute</button>
+<button id="stopSound" class="play_button" data-stop="stop" autocomplete="off">Feeling lucky? Then this might be a stop button</button>
 </div>
 
 
 <script type="text/javascript" src="inc/base64binary.js"></script>
-<script type="text/javascript" src="Midi.js"></script>
+<script type="text/javascript" src="Midi.min.js"></script>
 <script type="text/javascript" src="mml.js"></script>
 </body>
 </html>
